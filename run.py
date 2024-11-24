@@ -5,18 +5,19 @@ from collections import defaultdict
 import json
 import html
 import webbrowser
+import os
 
 
 # Google Sheets Setup
 SCOPES = ["https://www.googleapis.com/auth/spreadsheets"]
-CREDS_FILE = json.loads(os.environ['creds'])
+CREDS_INFO = json.loads(os.environ['creds'])  # Decodifica la variabile d'ambiente JSON
 SPREADSHEET_ID = "1jNF9dM8jqkJBCoWkHhPYtRDOtXTDtGt6Omdq5cZpX8U"  # Update with your Google Sheets ID
 SHEET_NAME = "Foglio1"  # Name of the sheet
 
 print("Welcome to the Task Logger Program!")
 
 # Authorize and open the sheet
-creds = Credentials.from_service_account_file(CREDS_FILE, scopes=SCOPES)
+creds = Credentials.from_service_account_info(CREDS_INFO, scopes=SCOPES)
 client = gspread.authorize(creds)
 sheet = client.open_by_key(SPREADSHEET_ID).worksheet(SHEET_NAME)
 
