@@ -9,7 +9,7 @@ import webbrowser
 
 # Google Sheets Setup
 SCOPES = ["https://www.googleapis.com/auth/spreadsheets"]
-CREDS_FILE = "creds.json"  # Update with your JSON file path
+CREDS_FILE = json.loads(os.environ['creds'])
 SPREADSHEET_ID = "1jNF9dM8jqkJBCoWkHhPYtRDOtXTDtGt6Omdq5cZpX8U"  # Update with your Google Sheets ID
 SHEET_NAME = "Foglio1"  # Name of the sheet
 
