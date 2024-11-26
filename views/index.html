@@ -1,16 +1,31 @@
 <body>
     <button onclick="window.location.reload()">Run Program</button>
-    <div id="terminal"></div>
+    <div id="terminal" style="width: 100vw; height: 100vh;"></div>
 
     <script>
-        var term = new Terminal({
-            cols: 80,
-            rows: 24
-        });
+        // Create a function to resize the terminal dynamically
+        function resizeTerminal(term) {
+            const terminalContainer = document.getElementById('terminal');
+            const cols = Math.floor(terminalContainer.offsetWidth / 9); // Adjust cell width as needed
+            const rows = Math.floor(terminalContainer.offsetHeight / 18); // Adjust cell height as needed
+            term.resize(cols, rows);
+        }
+
+        // Initialize the terminal
+        var term = new Terminal();
+
+        // Open the terminal in the #terminal div
         term.open(document.getElementById('terminal'));
         term.writeln('Running startup command: python3 run.py');
         term.writeln('');
 
+        // Resize the terminal to fit the full screen
+        resizeTerminal(term);
+
+        // Adjust terminal size on window resize
+        window.addEventListener('resize', () => resizeTerminal(term));
+
+        // Establish WebSocket connection
         var ws = new WebSocket(location.protocol.replace('http', 'ws') + '//' + location.hostname + (location.port ? (
             ':' + location.port) : '') + '/');
 
@@ -21,6 +36,7 @@
         ws.onerror = function (e) {
             console.log(e);
         };
+
         // Set focus in the terminal
         document.getElementsByClassName("xterm-helper-textarea")[0].focus();
     </script>
