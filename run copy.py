@@ -8,7 +8,6 @@ import webbrowser
 import os
 
 
-
 # Google Sheets Setup
 SCOPES = ["https://www.googleapis.com/auth/spreadsheets"]
 CREDS_INFO = json.loads(os.environ['creds'])  # Decodifica la variabile d'ambiente JSON
@@ -47,10 +46,10 @@ ensure_headers()
 def get_date():
     while True:
         date_input = input("Enter the date (DD-MM-YYYY) or press Enter to use today's date: ")
-
+        
         if not date_input.strip():  # User pressed Enter
             return datetime.now().strftime("%d-%m-%Y")
-
+        
         try:
             # Validate and format the custom date
             custom_date = datetime.strptime(date_input, "%d-%m-%Y")
@@ -66,7 +65,7 @@ def select_task_type():
         print("2. Marketing")
         print("3. Product")
         type_choice = input("Enter the number corresponding to the task type: ")
-
+        
         if type_choice == '1':
             return "Administrative"
         elif type_choice == '2':
@@ -95,53 +94,15 @@ def log_task():
 # Function to display all logged tasks
 def view_logs():
     try:
-        print("\nView Logs Options:")
-        print("1. Download Logs as CSV")
-        print("2. View Public Google Sheets Link")
-        print("3. View Logs in Terminal")
-
-        choice = input("Choose an option: ")
-
-        if choice == '1':
-            # Download logs as a CSV
-            records = sheet.get_all_records()
-            if not records:
-                print("No logs available to download.")
-                return
-
-            import csv
-            with open("logs.csv", "w", newline="") as f:
-                writer = csv.DictWriter(f, fieldnames=records[0].keys())
-                writer.writeheader()
-                writer.writerows(records)
-            print("Logs downloaded as logs.csv.")
-
-        elif choice == '2':
-            # View Google Sheets link
-            public_link = "https://docs.google.com/spreadsheets/d/1jNF9dM8jqkJBCoWkHhPYtRDOtXTDtGt6Omdq5cZpX8U/edit?usp=sharing"
-            print(f"Public Google Sheets Link: {public_link}")
-            webbrowser.open(public_link)
-
-        elif choice == '3':
-            # View logs in terminal
-            from prettytable import PrettyTable
-            records = sheet.get_all_records()
-            if not records:
-                print("No logs available to view.")
-                return
-
-            table = PrettyTable()
-            table.field_names = records[0].keys()
+        records = sheet.get_all_records()
+        if records:
+            print("\nLogged Tasks:")
             for record in records:
-                table.add_row(record.values())
-            print(table)
-
+                print(record)
         else:
-            print("Invalid choice.")
-
+            print("No logs found. Please log a task first.")
     except Exception as e:
-        print(f"Error viewing logs: {e}")
-
+        print(f"Error displaying logs: {e}")
 
 # Helper function to filter tasks by the selected month
 # Helper function to filter tasks by the selected month
@@ -211,7 +172,7 @@ def export_html():
             return
 
         # Aggregate data for charts
-
+        
         aggregated_data = defaultdict(float)
         task_type_data = defaultdict(float)
         for record in filtered_records:
@@ -231,7 +192,7 @@ def export_html():
         task_hours = [round((value / total_hours) * 100, 2) for value in task_type_data.values()]
         task_types_json = json.dumps(task_types)
         task_hours_json = json.dumps(task_hours)
-
+        
         # Generate the HTML content
         html_data = f"""
         <html>
@@ -241,8 +202,8 @@ def export_html():
             <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
             <style>
                 body {{
-                    font-family: Arial, sans-serif;
-                    background-color: #f9f9f9;
+                    font-family: Arial, sans-serif; 
+                    background-color: #f9f9f9; 
                     margin: 20px;
                     color: #333;
                 }}
