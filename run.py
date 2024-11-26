@@ -9,7 +9,7 @@ from prettytable import PrettyTable
 
 # Google Sheets Setup
 SCOPES = ["https://www.googleapis.com/auth/spreadsheets"]
-CREDS_INFO = json.loads(os.environ['creds'])  # Decodifica la variabile d'ambiente JSON
+CREDS_INFO = json.loads(os.environ['creds'])  # Decodes the environment variable
 SPREADSHEET_ID = "1jNF9dM8jqkJBCoWkHhPYtRDOtXTDtGt6Omdq5cZpX8U"  # Update with your Google Sheets ID
 SHEET_NAME = "Foglio1"  # Name of the sheet
 
@@ -152,8 +152,8 @@ def filter_tasks_by_month(records):
     return filtered_records, selected_month_name
 
 
-# Function to display bar charts in terminal
-def display_terminal_bar_chart():
+# Function to display statistics in table format
+def display_statistics_table():
     try:
         records = sheet.get_all_records()
 
@@ -180,22 +180,20 @@ def display_terminal_bar_chart():
             task_type_data[record['Type']] += float(record['Hours'])
             collaborator_data[record['Name']] += float(record['Hours'])
 
-        def generate_bar_chart(data, title):
-            max_label_width = max(len(label) for label in data.keys())
-            max_value = max(data.values())
+        def generate_table(data, title, headers):
+            table = PrettyTable()
+            table.title = title
+            table.field_names = headers
+            for key, value in data.items():
+                table.add_row([key, f"{value:.2f}h"])
+            print(table)
 
-            print(f"\n{title}:\n")
-            for label, value in data.items():
-                bar_length = int((value / max_value) * 40)
-                bar = "#" * bar_length
-                print(f"{label:<{max_label_width}} | {bar} ({value:.2f}h)")
-
-        generate_bar_chart(task_type_data, f"Hours per Task Type for {selected_month_name}")
-        generate_bar_chart(collaborator_data, f"Number of Hours by Name for {selected_month_name}")
-        generate_bar_chart(monthly_data, "Total Hours by Month")
+        generate_table(task_type_data, f"Hours per Task Type for {selected_month_name}", ["Task Type", "Hours"])
+        generate_table(collaborator_data, f"Hours by Collaborator for {selected_month_name}", ["Collaborator", "Hours"])
+        generate_table(monthly_data, "Total Hours by Month", ["Month", "Hours"])
 
     except Exception as e:
-        print(f"Error displaying bar chart: {e}")
+        print(f"Error displaying statistics: {e}")
 
 
 # Main function to display the menu and execute chosen options
@@ -213,7 +211,7 @@ def main():
         elif choice == '2':
             view_logs()
         elif choice == '3':
-            display_terminal_bar_chart()
+            display_statistics_table()
         elif choice == '4':
             print("Exiting program.")
             break
