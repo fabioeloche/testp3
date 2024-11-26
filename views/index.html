@@ -1,13 +1,13 @@
-<body style="margin: 0; overflow: hidden;">
-    <button onclick="window.location.reload()" style="width: 100%; height: 40px;">Run Program</button>
-    <div id="terminal" style="width: 100vw; height: calc(100vh - 40px); overflow-y: auto;"></div>
+<body style="margin: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh;">
+    <button onclick="window.location.reload()" style="margin-bottom: 10px; padding: 5px 10px;">Run Program</button>
+    <div id="terminal" style="width: 90%; height: 80%; border: 1px solid #ccc; overflow-y: auto;"></div>
 
     <script>
         // Create a function to resize the terminal dynamically
         function resizeTerminal(term) {
             const terminalContainer = document.getElementById('terminal');
-            const cols = Math.floor(terminalContainer.offsetWidth / 9); // Adjust cell width as needed
-            const rows = Math.floor(terminalContainer.offsetHeight / 18); // Adjust cell height as needed
+            const cols = Math.floor(terminalContainer.offsetWidth / 9); // Approximate cell width
+            const rows = Math.floor(terminalContainer.offsetHeight / 18); // Approximate cell height
             term.resize(cols, rows);
         }
 
