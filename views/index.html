@@ -1,6 +1,6 @@
 <body>
     <button onclick="window.location.reload()">Run Program</button>
-    <div id="terminal" style="width: 100vw; height: 100vh;"></div>
+    <div id="terminal" style="width: 100vw; height: 100vh; overflow-y: auto;"></div>
 
     <script>
         // Create a function to resize the terminal dynamically
@@ -12,7 +12,9 @@
         }
 
         // Initialize the terminal
-        var term = new Terminal();
+        var term = new Terminal({
+            scrollback: 1000, // Set the scrollback buffer for smooth scrolling
+        });
 
         // Open the terminal in the #terminal div
         term.open(document.getElementById('terminal'));
