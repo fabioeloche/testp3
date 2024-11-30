@@ -176,9 +176,13 @@ def display_statistics_table():
             month_name = date.strftime("%B %Y")
             monthly_data[month_name] += float(record["Hours"])
 
+        # Calculate task type and collaborator hours for the selected month
+        selected_month_total_hours = 0  # Variable to track the total hours of the selected month
+
         for record in filtered_records:
             task_type_data[record['Type']] += float(record['Hours'])
             collaborator_data[record['Name']] += float(record['Hours'])
+            selected_month_total_hours += float(record["Hours"])  # Add hours to the total for selected month
 
         def generate_table(data, title, headers):
             table = PrettyTable()
@@ -190,7 +194,7 @@ def display_statistics_table():
 
         generate_table(task_type_data, f"Hours per Task Type for {selected_month_name}", ["Task Type", "Hours"])
         generate_table(collaborator_data, f"Hours by Collaborator for {selected_month_name}", ["Collaborator", "Hours"])
-        
+        print(f"\nTotal Hours for {selected_month_name}: {selected_month_total_hours:.2f}h")
 
     except Exception as e:
         print(f"Error displaying statistics: {e}")
