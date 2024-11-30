@@ -190,7 +190,7 @@ def display_statistics_table():
 
         generate_table(task_type_data, f"Hours per Task Type for {selected_month_name}", ["Task Type", "Hours"])
         generate_table(collaborator_data, f"Hours by Collaborator for {selected_month_name}", ["Collaborator", "Hours"])
-        generate_table(monthly_data, "Total Hours by Month", ["Month", "Hours"])
+        
 
     except Exception as e:
         print(f"Error displaying statistics: {e}")
